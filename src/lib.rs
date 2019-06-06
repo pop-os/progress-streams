@@ -78,12 +78,12 @@
 use std::io::{self, Read, Write};
 
 /// Callback-based progress-monitoring writer.
-pub struct ProgressWriter<W: Write, C: Fn(usize)> {
+pub struct ProgressWriter<W: Write, C: FnMut(usize)> {
     writer: W,
     callback: C
 }
 
-impl<W: Write, C: Fn(usize)> ProgressWriter<W, C> {
+impl<W: Write, C: FnMut(usize)> ProgressWriter<W, C> {
     pub fn new(writer: W, callback: C) -> Self {
         Self { writer, callback }
     }
@@ -93,7 +93,7 @@ impl<W: Write, C: Fn(usize)> ProgressWriter<W, C> {
     }
 }
 
-impl<W: Write, C: Fn(usize)> Write for ProgressWriter<W, C> {
+impl<W: Write, C: FnMut(usize)> Write for ProgressWriter<W, C> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         let written = self.writer.write(buf)?;
         (self.callback)(written);
@@ -106,12 +106,12 @@ impl<W: Write, C: Fn(usize)> Write for ProgressWriter<W, C> {
 }
 
 /// Callback-based progress-monitoring reader.
-pub struct ProgressReader<R: Read, C: Fn(usize)> {
+pub struct ProgressReader<R: Read, C: FnMut(usize)> {
     reader: R,
     callback: C
 }
 
-impl<R: Read, C: Fn(usize)> ProgressReader<R, C> {
+impl<R: Read, C: FnMut(usize)> ProgressReader<R, C> {
     pub fn new(reader: R, callback: C) -> Self {
         Self { reader, callback }
     }
@@ -121,7 +121,7 @@ impl<R: Read, C: Fn(usize)> ProgressReader<R, C> {
     }
 }
 
-impl<R: Read, C: Fn(usize)> Read for ProgressReader<R, C> {
+impl<R: Read, C: FnMut(usize)> Read for ProgressReader<R, C> {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         let read = self.reader.read(buf)?;
         (self.callback)(read);
