@@ -1,6 +1,6 @@
 [package]
 name = "progress-streams"
-version = "1.0.0"
+version = "1.1.0"
 description = "Progress callbacks for types which implement Read/Write"
 repository = "https://github.com/pop-os/progress-streams"
 authors = ["Michael Aaron Murphy <mmstickman@gmail.com>"]
